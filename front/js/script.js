@@ -1,10 +1,10 @@
-// object FillSection à définir
+// Appel de la fonction "fillSection"
 fillSection();
 
 // Récupération des articles de l'API
 /**
  * définition de la fonction asynchrone "getArticles()"
- * éclaration de la variable "articlesCatch" qui attendra les résultat venant de l'API
+ * déclaration de la variable "articlesCatch" qui correspondra au résultat venant de l'API via la requête GET
  * @returns une Promise au format JSON
  */
 async function getArticles() {
@@ -16,13 +16,13 @@ async function getArticles() {
 /**
  * définition de la fonction asynchrone "fillSection"
  * déclaration de la variable "result" qui attendra le résultat de la fonction "getArticles()"
- * appel de la fonction then() pour récuper les résultat de la requête dans la variable "resultatAPI"
+ * appel de la fonction then() pour récuper les résultat de la requête dans la fonction locale "resultatAPI"
  * déclaration de la constante "articles" correpondant aux valeurs JSON de "resultatAPI"
  * affiche dans la console sous forme de tableau "resultatAPI"
- * initilisation de la boucle parcourant article
+ * initilisation de la boucle parcourant la constante "article"
  */
 async function fillSection() {
-    var result = await getArticles ()
+    var result = await getArticles()
     .then(function (resultatAPI){
         const articles = resultatAPI;
         console.table(articles);
@@ -31,7 +31,7 @@ async function fillSection() {
             // Insertion de l'élément "a"
             /**
              * création de la variable "productLink" correspondant à "<a href=""><a/>"
-             * dans le DOM, selection l'élement html d'id ".items" et ajout un noeud à la fin 
+             * dans le DOM, selection l'élement html d'id ".items" et ajout un noeud à la fin (plus performant que innerHTML +=)
              * selectionne l'élement du DOM "<a>"."href" pour lui ajouter l'id du produit
              */
             let productLink = document.createElement("a");
