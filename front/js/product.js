@@ -56,7 +56,7 @@ function getPost(article){
     addToCart(article);
 }
 
-// (Panier)
+// Récupération de la couleur et de la quantité pour le Panier
 const colorPicked = document. querySelector("#colors");
 const quantityPicked = document.querySelector("#quantity");
 //Gestion du panier
@@ -69,7 +69,6 @@ function addToCart(article) {
 
     //Recupération du choix de la couleur
     let choixCouleur = colorPicked.value;
-                
     //Recupération du choix de la quantité
     let choixQuantite = quantityPicked.value;
 
