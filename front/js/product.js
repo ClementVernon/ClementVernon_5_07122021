@@ -56,6 +56,20 @@ function getPost(article){
     addToCart(article);
 }
 
+//Vérification que la quantité séléctionné est valide
+function checkPanier(){
+    let quantity = document.querySelector("#quantity");
+    quantity.addEventListener("change", (event)=>{
+    if (quantity.value > 0 && quantity.value <= 100){
+        window.alert("Quantité disponible");
+    }
+    else {
+        window.alert("Veuillez selectionner une valeur comprise entre 1 et 100");
+    }
+    })
+}
+checkPanier()
+
 // Récupération de la couleur et de la quantité pour le Panier
 const colorPicked = document. querySelector("#colors");
 const quantityPicked = document.querySelector("#quantity");
