@@ -65,6 +65,7 @@ function checkPanier(){
     }
     else {
         window.alert("Veuillez selectionner une valeur comprise entre 1 et 100");
+        document.querySelector("#quantity").value = 1;
     }
     })
 }

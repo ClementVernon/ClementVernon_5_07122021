@@ -292,6 +292,7 @@ function postForm(){
         if (inputNameValue == 0 || inputLastNameValue == 0 || inputAdressValue == 0 || inputCityValue == 0 || inputMailValue == 0){
             window.alert("Veuillez renseigner vos coordonées");
         } else {
+            event.preventDefault();
             //Construction d'un array depuis le local storage
             let idProducts = [];
             for (let i = 0; i<produitLocalStorage.length;i++) {
@@ -299,6 +300,7 @@ function postForm(){
             }
             console.log(idProducts);
             
+            //Construction des données attendu par l'API
             const order = {
                 contact : {
                     firstName: inputName.value,
@@ -319,14 +321,14 @@ function postForm(){
                 },
             };
 
-            fetch("http://localhost:3000/api/products/order", options) // correction 3 -->
+            //Requete au serveur 
+            fetch("http://localhost:3000/api/products/order", options)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
                 localStorage.clear();
                 localStorage.setItem("orderId", data.orderId);
-
-                document.location.href = "confirmation.html";
+                location.href = "confirmation.html";
             })
             .catch((err) => {
                 alert ("Problème avec fetch : " + err.message);
