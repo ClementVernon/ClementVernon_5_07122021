@@ -1,9 +1,13 @@
-//Initialisation du local storage
+// Récupération des produits du LocalStorage
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 console.table(produitLocalStorage);
+// Récupération du/des éléments produit
 const positionEmptyCart = document.querySelector("#cart__items");
+// Gestion des erreurs dans le formulaire 
+var invalid = false;
 
-// Si le panier est vide
+// Gestion du/des produits
+// Vérifie s'il y a des produits à afficher
 function getCart(){
 if (produitLocalStorage === null || produitLocalStorage == 0) {
     const emptyCart = `<p>Votre panier est vide</p>`;
@@ -92,6 +96,7 @@ for (let produit in produitLocalStorage){
 }}
 getCart();
 
+// Gestion du total
 function getTotals(){
 
     // Récupération du total des quantités
@@ -121,7 +126,7 @@ function getTotals(){
 getTotals();
 
 
-// Modification d'une quantité de produit
+// Gestion de la modification de quantité
 function modifyQtt() {
     let qttModif = document.querySelectorAll(".itemQuantity");
 
@@ -129,10 +134,11 @@ function modifyQtt() {
         qttModif[k].addEventListener("change" , (event) => {
             event.preventDefault();
 
-            //Selection de l'element à modifier en fonction de son id ET sa couleur
+            // Selection de l'element à modifier en fonction de son id ET sa couleur
             let quantityModif = produitLocalStorage[k].quantiteProduit;
             let qttModifValue = qttModif[k].valueAsNumber;
             
+            // Correction 1 : dans le cas ou une valeur inférieur à 1 ou supérieur à 100 est renseigné
             if(qttModifValue > 0 && qttModifValue <= 100){
                 window.alert("Quantité disponible");
                 const resultFind = produitLocalStorage.find((el) => el.qttModifValue !== quantityModif);
@@ -152,7 +158,7 @@ function modifyQtt() {
 }
 modifyQtt();
 
-// Suppression d'un produit
+// Gestion de la suppréssion d'un produit
 function deleteProduct() {
     let btn_supprimer = document.querySelectorAll(".deleteItem");
 
@@ -160,7 +166,7 @@ function deleteProduct() {
         btn_supprimer[j].addEventListener("click" , (event) => {
             event.preventDefault();
 
-            //Selection de l'element à supprimer en fonction de son id ET sa couleur
+            // Selection de l'element à supprimer en fonction de son id ET sa couleur
             let idDelete = produitLocalStorage[j].idProduit;
             let colorDelete = produitLocalStorage[j].couleurProduit;
 
@@ -168,7 +174,7 @@ function deleteProduct() {
             
             localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
 
-            //Alerte produit supprimé et refresh
+            // Alerte produit supprimé et refresh
             alert("Ce produit a bien été supprimé du panier");
             location.reload();
         })
@@ -176,12 +182,13 @@ function deleteProduct() {
 }
 deleteProduct();
 
-//Instauration formulaire avec regex
+// Gestion du formulaire
 function getForm() {
+    
     // Ajout des Regex
     let form = document.querySelector(".cart__order__form");
 
-    //Création des expressions régulières
+    // Création des expressions régulières
     let charRegExp = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç -]{2,20}$");
     let emailRegExp = new RegExp('^[a-zA-Z.,-_]+[@]{1}[a-zA-Z-_]+[.]{1}[a-z]{2,10}$');
 
@@ -210,7 +217,7 @@ function getForm() {
         validEmail(this);
     });
 
-    //validation du prénom
+    // Validation du prénom
     const validFirstName = function(inputFirstName) {
         let firstNameErrorMsg = inputFirstName.nextElementSibling;
 
@@ -218,10 +225,11 @@ function getForm() {
             firstNameErrorMsg.innerHTML = '';
         } else {
             firstNameErrorMsg.innerHTML = 'Veuillez renseigner votre Prénom.';
+            invalid = true;
         }
     };
 
-    //validation du nom
+    // Validation du nom
     const validLastName = function(inputLastName) {
         let lastNameErrorMsg = inputLastName.nextElementSibling;
 
@@ -229,10 +237,11 @@ function getForm() {
             lastNameErrorMsg.innerHTML = '';
         } else {
             lastNameErrorMsg.innerHTML = 'Veuillez renseigner votre Nom.';
+            invalid = true;
         }
     };
 
-    //validation de l'adresse
+    // Validation de l'adresse
     const validAddress = function(inputAddress) {
         let addressErrorMsg = inputAddress.nextElementSibling;
 
@@ -240,10 +249,11 @@ function getForm() {
             addressErrorMsg.innerHTML = '';
         } else {
             addressErrorMsg.innerHTML = 'Veuillez renseigner votre Adresse';
+            invalid = true;
         }
     };
 
-    //validation de la ville
+    // Validation de la ville
     const validCity = function(inputCity) {
         let cityErrorMsg = inputCity.nextElementSibling;
 
@@ -251,10 +261,11 @@ function getForm() {
             cityErrorMsg.innerHTML = '';
         } else {
             cityErrorMsg.innerHTML = 'Veuillez renseigner votre Ville.';
+            invalid = true;
         }
     };
 
-    //validation de l'email
+    // Validation de l'email
     const validEmail = function(inputEmail) {
         let emailErrorMsg = inputEmail.nextElementSibling;
 
@@ -262,45 +273,48 @@ function getForm() {
             emailErrorMsg.innerHTML = '';
         } else {
             emailErrorMsg.innerHTML = 'Veuillez renseigner votre adresse mail.';
+            invalid = true;
         }
     };
     }
 getForm();
 
-//Envoi des informations client au localstorage
+// Gestion de la commande
 function postForm(){
     const btn_commander = document.getElementById("order");
 
-    //Ecouter le panier
+    // Ecouter le panier
     btn_commander.addEventListener("click", (event)=>{
 
-        //Récupération des coordonnées du formulaire client
+        if (invalid == false){
+        // Récupération des coordonnées du formulaire client
         let inputName = document.getElementById('firstName');
         let inputLastName = document.getElementById('lastName');
         let inputAdress = document.getElementById('address');
         let inputCity = document.getElementById('city');
         let inputMail = document.getElementById('email');
 
-        //Test : condition que tous les champs sont renseignés
-        //Récupération des valeurs du formulaire client
+        // Test : condition que tous les champs sont renseignés
+        // Récupération des valeurs du formulaire client
         let inputNameValue = inputName.value;
         let inputLastNameValue = inputLastName.value;
         let inputAdressValue = inputAdress.value;
         let inputCityValue = inputCity.value;
         let inputMailValue = inputMail.value;
-        //Test
+        // Correction 2 : dans le cas ou l'on envoi d'un formulaire de contact vide
         if (inputNameValue == 0 || inputLastNameValue == 0 || inputAdressValue == 0 || inputCityValue == 0 || inputMailValue == 0){
             window.alert("Veuillez renseigner vos coordonées");
         } else {
+            // Correction 3 : problème de redirection
             event.preventDefault();
-            //Construction d'un array depuis le local storage
+            // Construction d'un array depuis le local storage
             let idProducts = [];
             for (let i = 0; i<produitLocalStorage.length;i++) {
                 idProducts.push(produitLocalStorage[i].idProduit);
             }
             console.log(idProducts);
             
-            //Construction des données attendu par l'API
+            // Construction des données attendu par l'API
             const order = {
                 contact : {
                     firstName: inputName.value,
@@ -321,7 +335,7 @@ function postForm(){
                 },
             };
 
-            //Requete au serveur 
+            // Requete au serveur 
             fetch("http://localhost:3000/api/products/order", options)
             .then((response) => response.json())
             .then((data) => {
@@ -333,6 +347,10 @@ function postForm(){
             .catch((err) => {
                 alert ("Problème avec fetch : " + err.message);
             });
+        }} else {
+            window.alert("Coordonnées invalides. Veuillez renseigner des coordonées valides");
+            // Réinitialisation pour la gestion des erreurs dans le formulaire 
+            invalid = false;
         }
     })
 }
