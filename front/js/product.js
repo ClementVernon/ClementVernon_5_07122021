@@ -79,7 +79,7 @@ function addToCart(article) {
     // Ecoute l'ajout au panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
     const btn_envoyerPanier = document.querySelector("#addToCart");
     btn_envoyerPanier.addEventListener("click", (event)=>{
-        if (quantityPicked.value > 0 && quantityPicked.value <=100 && quantityPicked.value != 0){
+        if (quantityPicked.value > 0 && quantityPicked.value <=100 && quantityPicked.value != 0 && colorPicked.value != 0){
 
     // Recupération du choix de la couleur et de la quantité
     let choixCouleur = colorPicked.value;
@@ -135,20 +135,28 @@ Pour consulter votre panier, cliquez sur OK`)){
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
         console.table(produitLocalStorage);
         popupConfirmation();
-    }}
+    }} else {
+        alert("Veuillez à choisir une couleur et une quantité comprise entre 1-100 avant d'ajouter au panier.");
+    }
     });
 }
 
 
 // Correction 1 : Gestion de quantité séléctionné, ne doit pas être inférieur à 1 ou suppérieur à 100
 function checkPanier(){
+    let color = document.querySelector("#colors");
     let quantity = document.querySelector("#quantity");
     quantity.addEventListener("change", (event)=>{
-    if (quantity.value > 0 && quantity.value <= 100){
-        window.alert("Quantité disponible");
+    if (color.value == 0 ){
+        alert("Veuillez choisir une couleur.");
+        return;
     }
-    else {
-        window.alert("Veuillez selectionner une valeur comprise entre 1 et 100");
+    if (quantity.value < 1 ) {
+        alert("Veuillez selectionner une valeur comprise entre 1 et 100");
+        document.querySelector("#quantity").value = 1;
+    }
+    if (quantity.value > 100 ) {
+        alert("Veuillez selectionner une valeur comprise entre 1 et 100");
         document.querySelector("#quantity").value = 1;
     }
     })

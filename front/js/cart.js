@@ -140,7 +140,6 @@ function modifyQtt() {
             
             // Correction 1 : dans le cas ou une valeur inférieur à 1 ou supérieur à 100 est renseigné
             if(qttModifValue > 0 && qttModifValue <= 100){
-                window.alert("Quantité disponible");
                 const resultFind = produitLocalStorage.find((el) => el.qttModifValue !== quantityModif);
 
                 resultFind.quantiteProduit = qttModifValue;
